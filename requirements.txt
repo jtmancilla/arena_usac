@@ -1,0 +1,11 @@
+# =============================================================================
+# Dependencias — ARENA Biometrics (00a_pipeline_arena_biometrics.py)
+# =============================================================================
+
+numpy
+scipy
+librosa
+soundfile
+resemblyzer
+pandas
+boto3
