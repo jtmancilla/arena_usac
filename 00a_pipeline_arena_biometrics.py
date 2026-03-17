@@ -17,6 +17,7 @@ import logging
 from pathlib import Path
 from datetime import date
 
+import torch
 from arena.io_utils import export_timeline_json
 
 # ============================================================================
@@ -58,9 +59,10 @@ def main():
     logging.info("=" * 60)
     logging.info("00a — Extraccion ARENA (timeline JSONs)")
     logging.info("=" * 60)
+    device = "cuda" if torch.cuda.is_available() else "cpu"
     logging.info(
         f"Parametros: chunk={CHUNK_SEC}s | drift={UMBRAL_DRIFT} | "
-        f"estres={UMBRAL_ESTRES_MIN} | silencio={UMBRAL_SILENCIO_RMS}"
+        f"estres={UMBRAL_ESTRES_MIN} | silencio={UMBRAL_SILENCIO_RMS} | device={device}"
     )
 
     TIMELINES_DIR.mkdir(parents=True, exist_ok=True)
@@ -88,6 +90,7 @@ def main():
             payload = export_timeline_json(
                 input_audio=wav_path,
                 output_json=timeline_path,
+                device=device,
                 chunk_sec=CHUNK_SEC,
                 buffer_seconds=BUFFER_SECONDS,
                 umbral_silencio_rms=UMBRAL_SILENCIO_RMS,

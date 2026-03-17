@@ -21,6 +21,8 @@ from datetime import date
 from pathlib import Path
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
+import torch
+
 # Asegurar que importamos del modulo local
 from arena.io_utils import export_timeline_json
 
@@ -70,6 +72,7 @@ s3 = boto3.client("s3")
 
 def process_single_audio(s3_key: str, s3_output_path: str) -> bool:
     """Descarga de S3, procesa el audio, sube el JSON resultante, y limpia."""
+    device = "cuda" if torch.cuda.is_available() else "cpu"
     filename = os.path.basename(s3_key)
     local_audio = f"tmp/{filename}"
     
@@ -90,6 +93,7 @@ def process_single_audio(s3_key: str, s3_output_path: str) -> bool:
         payload = export_timeline_json(
             input_audio=Path(local_audio),
             output_json=Path(local_json),      # lo guardamos temporalmente local
+            device=device,
             chunk_sec=CHUNK_SEC,
             buffer_seconds=BUFFER_SECONDS,
             umbral_silencio_rms=UMBRAL_SILENCIO_RMS,
