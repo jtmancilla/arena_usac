@@ -18,6 +18,7 @@ import time
 import boto3
 import logging
 from datetime import date
+from pathlib import Path
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
 # Asegurar que importamos del modulo local
@@ -87,8 +88,8 @@ def process_single_audio(s3_key: str, s3_output_path: str) -> bool:
 
         # 2. Procesar (Usa CPU o GPU automáticamente si torch+cuda están instalados)
         payload = export_timeline_json(
-            input_audio=local_audio,
-            output_json=local_json,      # lo guardamos temporalmente local
+            input_audio=Path(local_audio),
+            output_json=Path(local_json),      # lo guardamos temporalmente local
             chunk_sec=CHUNK_SEC,
             buffer_seconds=BUFFER_SECONDS,
             umbral_silencio_rms=UMBRAL_SILENCIO_RMS,
