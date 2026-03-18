@@ -9,6 +9,7 @@
 !00b_arena_summary.py
 !00a_pipeline_arena_biometrics_aws.py
 !00b_arena_summary_aws.py
+!00c_arena_evaluation_aws.py
 !requirements.txt
 !README.md
 !README_aws.md
